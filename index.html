@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spotify Top 50 — 2019</title>
+<link href="https://fonts.googleapis.com/css2?family=Circular+Std:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1DB954;
+    --green-light: #1ed760;
+    --green-dark: #158a3e;
+    --black: #121212;
+    --dark: #181818;
+    --dark2: #282828;
+    --dark3: #333333;
+    --gray: #535353;
+    --gray2: #b3b3b3;
+    --white: #FFFFFF;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(180deg, #0a3d20 0%, #121212 100%);
+    padding: 40px 48px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(29,185,84,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 28px;
+  }
+  .spotify-logo {
+    width: 44px; height: 44px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .spotify-logo svg { width: 26px; }
+  .header-text h1 {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 80px);
+    letter-spacing: 2px;
+    line-height: 1;
+    color: var(--white);
+  }
+  .header-text h1 span { color: var(--green); }
+  .header-text p {
+    color: var(--gray2);
+    font-size: 14px;
+    font-weight: 300;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+  .header-badge {
+    margin-left: auto;
+    background: var(--green);
+    color: var(--black);
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: 1px;
+    padding: 10px 22px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 48px 60px;
+  }
+
+  /* ─── KPI CARDS ─── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: var(--dark);
+    border-radius: 8px;
+    padding: 24px 20px;
+    border: 1px solid var(--dark3);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .kpi-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--green);
+  }
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--green);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .kpi-card:hover::after { transform: scaleX(1); }
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray2);
+    margin-bottom: 10px;
+  }
+  .kpi-value {
+    font-family: var(--font-display);
+    font-size: 42px;
+    color: var(--white);
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+  .kpi-value span { color: var(--green); font-size: 26px; }
+  .kpi-sub {
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 6px;
+    font-family: var(--font-mono);
+  }
+
+  /* ─── SECTION TITLE ─── */
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--dark3);
+  }
+
+  /* ─── CHARTS ROW ─── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .chart-card {
+    background: var(--dark);
+    border-radius: 8px;
+    padding: 24px;
+    border: 1px solid var(--dark3);
+  }
+  .chart-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--gray2);
+    margin-bottom: 18px;
+  }
+  canvas { display: block; width: 100% !important; }
+
+  /* ─── FILTERS ─── */
+  .filters-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 12px;
+    color: var(--gray2);
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .filter-btn {
+    background: var(--dark2);
+    border: 1px solid var(--dark3);
+    color: var(--gray2);
+    padding: 7px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--green);
+    color: var(--black);
+    border-color: var(--green);
+    font-weight: 700;
+  }
+  .search-box {
+    margin-left: auto;
+    background: var(--dark2);
+    border: 1px solid var(--dark3);
+    border-radius: 20px;
+    padding: 7px 18px 7px 36px;
+    color: var(--white);
+    font-size: 13px;
+    font-family: var(--font-body);
+    outline: none;
+    transition: border-color 0.2s;
+    position: relative;
+    width: 220px;
+  }
+  .search-wrap {
+    position: relative;
+    margin-left: auto;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray2);
+    pointer-events: none;
+  }
+  .search-box:focus { border-color: var(--green); }
+
+  /* ─── TABLE ─── */
+  .table-card {
+    background: var(--dark);
+    border-radius: 8px;
+    border: 1px solid var(--dark3);
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead tr {
+    background: var(--dark2);
+    border-bottom: 1px solid var(--dark3);
+  }
+  thead th {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--gray2);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  thead th:hover { color: var(--green); }
+  thead th.sorted { color: var(--green); }
+  thead th .sort-arrow { margin-left: 4px; font-size: 10px; }
+  tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  tbody tr:hover { background: rgba(255,255,255,0.05); }
+  tbody tr.selected { background: rgba(29,185,84,0.08); }
+  tbody td {
+    padding: 13px 16px;
+    color: var(--white);
+    vertical-align: middle;
+  }
+  td.rank {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--gray);
+    width: 40px;
+  }
+  td.track { font-weight: 600; }
+  td.artist { color: var(--gray2); }
+  td.genre { color: var(--gray2); font-size: 12px; }
+  .bar-cell { display: flex; align-items: center; gap: 8px; }
+  .bar-bg {
+    flex: 1;
+    height: 4px;
+    background: var(--dark3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(.4,0,.2,1);
+  }
+  .bar-val {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray2);
+    width: 28px;
+    text-align: right;
+  }
+
+  /* Energy dot */
+  .energy-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  /* ─── PAGINATION ─── */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    border-top: 1px solid var(--dark3);
+  }
+  .page-btn {
+    background: var(--dark2);
+    border: 1px solid var(--dark3);
+    color: var(--gray2);
+    width: 36px; height: 36px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .page-btn:hover, .page-btn.active {
+    background: var(--green);
+    color: var(--black);
+    border-color: var(--green);
+  }
+
+  /* ─── DETAIL PANEL ─── */
+  .detail-panel {
+    display: none;
+    background: var(--dark);
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 16px;
+    animation: slideIn 0.3s ease;
+  }
+  .detail-panel.open { display: block; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px 32px;
+    align-items: start;
+  }
+  .detail-cover {
+    width: 100px; height: 100px;
+    background: linear-gradient(135deg, var(--green-dark), var(--dark3));
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 36px;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .detail-info h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .detail-info .detail-artist {
+    color: var(--green);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .detail-attrs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .attr-chip {
+    background: var(--dark2);
+    border: 1px solid var(--dark3);
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+  }
+  .attr-chip strong { color: var(--green); margin-right: 4px; }
+  .detail-bars {
+    margin-top: 16px;
+  }
+  .detail-bar-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .detail-bar-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray2);
+    width: 90px;
+    flex-shrink: 0;
+  }
+  .detail-bar-bg {
+    flex: 1; height: 6px;
+    background: var(--dark3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .detail-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+  .detail-bar-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--gray2);
+    width: 32px;
+    text-align: right;
+  }
+
+  /* ─── TOOLTIP ─── */
+  .tooltip {
+    position: fixed;
+    background: var(--dark2);
+    border: 1px solid var(--dark3);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--white);
+    pointer-events: none;
+    z-index: 9999;
+    display: none;
+    max-width: 220px;
+  }
+  .tooltip strong { color: var(--green); display: block; margin-bottom: 2px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .container { padding: 24px 24px 48px; }
+    header { padding: 32px 24px 24px; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .charts-row { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .charts-row { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .header-badge { display: none; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--dark3); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gray); }
+
+  .no-results {
+    text-align: center;
+    padding: 48px;
+    color: var(--gray2);
+    font-size: 14px;
+  }
+  .no-results span { color: var(--green); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="spotify-logo">
+      <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>TOP <span>50</span> SPOTIFY</h1>
+      <p>United States · 2019 · Audio Features Dashboard</p>
+    </div>
+    <div class="header-badge">2019</div>
+  </div>
+</header>
+
+<div class="container">
+  <!-- KPI Cards -->
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <!-- Charts -->
+  <div class="section-title">Análisis por Género &amp; Audio</div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Géneros más frecuentes</h3>
+      <canvas id="genreChart" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Energía vs Popularidad</h3>
+      <canvas id="scatterChart" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>BPM promedio por género</h3>
+      <canvas id="bpmChart" height="220"></canvas>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="section-title">Canciones</div>
+  <div class="filters-bar">
+    <span class="filter-label">Género:</span>
+    <button class="filter-btn active" data-genre="all">Todos</button>
+    <div id="genreFilters"></div>
+    <div class="search-wrap">
+      <svg width="14" height="14" fill="none" stroke="#b3b3b3" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-box" id="searchBox" type="text" placeholder="Buscar canción o artista…">
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr id="tableHead"></tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="detail-panel" id="detailPanel"></div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ─────────────────────────────────────────
+// DATASET — Top 50 Spotify USA 2019
+// ─────────────────────────────────────────
+const RAW = [
+  {rank:1,  track:"Senorita",                  artist:"Shawn Mendes",          genre:"canadian pop",           bpm:117,energy:55,dance:76,loud:-6,live:8, val:75,dur:191,acous:4, speech:3, pop:79},
+  {rank:2,  track:"China",                      artist:"Anuel AA",              genre:"reggaeton flow",         bpm:87, energy:65,dance:80,loud:-4,live:8, val:61,dur:302,acous:8, speech:9, pop:92},
+  {rank:3,  track:"boyfriend",                  artist:"Ariana Grande",         genre:"dance pop",              bpm:190,energy:80,dance:40,loud:-4,live:16,val:27,dur:186,acous:12,speech:5, pop:85},
+  {rank:4,  track:"Beautiful People",           artist:"Ed Sheeran",            genre:"pop",                    bpm:93, energy:65,dance:64,loud:-8,live:8, val:55,dur:198,acous:12,speech:19,pop:86},
+  {rank:5,  track:"Goodbyes",                   artist:"Post Malone",           genre:"dfw rap",                bpm:150,energy:58,dance:58,loud:-6,live:11,val:23,dur:175,acous:6, speech:4, pop:94},
+  {rank:6,  track:"I Don't Care",               artist:"Ed Sheeran",            genre:"pop",                    bpm:102,energy:66,dance:84,loud:-5,live:7, val:82,dur:220,acous:15,speech:4, pop:88},
+  {rank:7,  track:"Bad Guy",                    artist:"Billie Eilish",         genre:"electropop",             bpm:135,energy:43,dance:70,loud:-8,live:10,val:56,dur:194,acous:1, speech:5, pop:95},
+  {rank:8,  track:"Ransom",                     artist:"Lil Tecca",             genre:"rap",                    bpm:180,energy:64,dance:73,loud:-6,live:9, val:62,dur:159,acous:5, speech:14,pop:92},
+  {rank:9,  track:"How Do You Sleep?",          artist:"Sam Smith",             genre:"pop",                    bpm:111,energy:68,dance:52,loud:-6,live:9, val:35,dur:234,acous:6, speech:4, pop:90},
+  {rank:10, track:"Panini",                     artist:"Lil Nas X",             genre:"country rap",            bpm:77, energy:50,dance:75,loud:-8,live:18,val:64,dur:112,acous:6, speech:7, pop:94},
+  {rank:11, track:"Con Calma",                  artist:"Daddy Yankee",          genre:"reggaeton",              bpm:95, energy:65,dance:79,loud:-6,live:16,val:73,dur:193,acous:7, speech:8, pop:90},
+  {rank:12, track:"Callaita",                   artist:"Bad Bunny",             genre:"reggaeton",              bpm:88, energy:68,dance:80,loud:-5,live:13,val:83,dur:249,acous:6, speech:12,pop:93},
+  {rank:13, track:"Old Town Road",              artist:"Lil Nas X",             genre:"country rap",            bpm:136,energy:62,dance:62,loud:-7,live:11,val:54,dur:114,acous:18,speech:9, pop:87},
+  {rank:14, track:"Money in the Grave",         artist:"Drake",                 genre:"canadian hip hop",       bpm:90, energy:67,dance:73,loud:-8,live:7, val:31,dur:229,acous:5, speech:18,pop:91},
+  {rank:15, track:"Sucker",                     artist:"Jonas Brothers",        genre:"pop",                    bpm:138,energy:84,dance:72,loud:-5,live:11,val:81,dur:181,acous:5, speech:4, pop:87},
+  {rank:16, track:"Antisocial",                 artist:"Ed Sheeran",            genre:"pop",                    bpm:148,energy:76,dance:57,loud:-6,live:35,val:59,dur:170,acous:4, speech:5, pop:87},
+  {rank:17, track:"Break Up with Your Girlfriend",artist:"Ariana Grande",      genre:"dance pop",              bpm:122,energy:73,dance:58,loud:-6,live:9, val:17,dur:193,acous:2, speech:4, pop:88},
+  {rank:18, track:"Taki Taki",                  artist:"DJ Snake",              genre:"latin",                  bpm:97, energy:76,dance:79,loud:-4,live:12,val:54,dur:219,acous:3, speech:4, pop:87},
+  {rank:19, track:"7 Rings",                    artist:"Ariana Grande",         genre:"dance pop",              bpm:140,energy:31,dance:78,loud:-9,live:14,val:22,dur:178,acous:29,speech:33,pop:78},
+  {rank:20, track:"Piece of Your Heart",        artist:"MEDUZA",                genre:"electronic trap",        bpm:124,energy:63,dance:63,loud:-9,live:7, val:20,dur:195,acous:2, speech:3, pop:83},
+  {rank:21, track:"Lalala",                     artist:"Y2K",                   genre:"pop",                    bpm:98, energy:53,dance:77,loud:-8,live:9, val:55,dur:174,acous:5, speech:5, pop:91},
+  {rank:22, track:"If I Can't Have You",        artist:"Shawn Mendes",          genre:"canadian pop",           bpm:128,energy:66,dance:52,loud:-7,live:7, val:51,dur:207,acous:8, speech:3, pop:89},
+  {rank:23, track:"Sunflower",                  artist:"Post Malone",           genre:"dfw rap",                bpm:95, energy:48,dance:76,loud:-9,live:7, val:91,dur:158,acous:22,speech:5, pop:88},
+  {rank:24, track:"Cross Me",                   artist:"Ed Sheeran",            genre:"pop",                    bpm:95, energy:54,dance:75,loud:-7,live:8, val:61,dur:206,acous:10,speech:8, pop:83},
+  {rank:25, track:"Myself",                     artist:"Bazzi",                 genre:"pop",                    bpm:73, energy:59,dance:74,loud:-8,live:18,val:50,dur:197,acous:5, speech:4, pop:80},
+  {rank:26, track:"Con Altura",                 artist:"ROSALIA",               genre:"latin",                  bpm:100,energy:57,dance:81,loud:-9,live:8, val:68,dur:196,acous:6, speech:9, pop:82},
+  {rank:27, track:"Teeth",                      artist:"5 Seconds of Summer",   genre:"australian pop",         bpm:130,energy:78,dance:62,loud:-4,live:25,val:36,dur:196,acous:3, speech:6, pop:80},
+  {rank:28, track:"All Falls Down",             artist:"Alan Walker",           genre:"electronic trap",        bpm:120,energy:65,dance:60,loud:-6,live:12,val:45,dur:211,acous:4, speech:4, pop:85},
+  {rank:29, track:"Dancing with a Stranger",    artist:"Sam Smith",             genre:"pop",                    bpm:100,energy:64,dance:65,loud:-8,live:7, val:40,dur:172,acous:8, speech:4, pop:90},
+  {rank:30, track:"There's Nothing Holdin' Me Back",artist:"Shawn Mendes",     genre:"canadian pop",           bpm:206,energy:81,dance:55,loud:-4,live:12,val:86,dur:203,acous:7, speech:4, pop:77},
+  {rank:31, track:"Talk",                       artist:"Khalid",                genre:"electropop",             bpm:136,energy:48,dance:76,loud:-9,live:12,val:49,dur:198,acous:5, speech:3, pop:88},
+  {rank:32, track:"Muévelo",                    artist:"Nicky Jam",             genre:"reggaeton",              bpm:95, energy:59,dance:78,loud:-7,live:23,val:54,dur:249,acous:8, speech:6, pop:83},
+  {rank:33, track:"Please Me",                  artist:"Cardi B",               genre:"rap",                    bpm:91, energy:55,dance:71,loud:-9,live:8, val:54,dur:185,acous:1, speech:8, pop:79},
+  {rank:34, track:"Only Human",                 artist:"Jonas Brothers",        genre:"pop",                    bpm:86, energy:64,dance:72,loud:-7,live:9, val:72,dur:211,acous:5, speech:5, pop:79},
+  {rank:35, track:"Money",                      artist:"Cardi B",               genre:"rap",                    bpm:180,energy:68,dance:62,loud:-7,live:10,val:29,dur:159,acous:1, speech:21,pop:83},
+  {rank:36, track:"Memories",                   artist:"Maroon 5",              genre:"pop",                    bpm:91, energy:27,dance:68,loud:-13,live:9,val:43,dur:149,acous:79,speech:3, pop:85},
+  {rank:37, track:"Truth Hurts",                artist:"Lizzo",                 genre:"r&b",                    bpm:158,energy:59,dance:79,loud:-7,live:15,val:65,dur:173,acous:7, speech:8, pop:82},
+  {rank:38, track:"Sinner",                     artist:"Carlos Baute",          genre:"latin",                  bpm:144,energy:79,dance:71,loud:-6,live:16,val:46,dur:218,acous:4, speech:4, pop:74},
+  {rank:39, track:"You Need to Calm Down",      artist:"Taylor Swift",          genre:"pop",                    bpm:93, energy:55,dance:74,loud:-6,live:9, val:47,dur:171,acous:20,speech:6, pop:86},
+  {rank:40, track:"Without Me",                 artist:"Halsey",                genre:"electropop",             bpm:137,energy:64,dance:67,loud:-7,live:7, val:48,dur:200,acous:6, speech:5, pop:88},
+  {rank:41, track:"Heartless",                  artist:"Diplo",                 genre:"electronic trap",        bpm:141,energy:53,dance:78,loud:-10,live:8,val:33,dur:174,acous:3, speech:5, pop:79},
+  {rank:42, track:"Boyfriend",                  artist:"Selena Gomez",          genre:"dance pop",              bpm:169,energy:54,dance:64,loud:-9,live:10,val:29,dur:176,acous:7, speech:5, pop:87},
+  {rank:43, track:"All the Good Girls Go to Hell",artist:"Billie Eilish",      genre:"electropop",             bpm:120,energy:63,dance:59,loud:-9,live:10,val:38,dur:157,acous:2, speech:4, pop:87},
+  {rank:44, track:"Wow.",                       artist:"Post Malone",           genre:"dfw rap",                bpm:98, energy:70,dance:72,loud:-5,live:7, val:39,dur:145,acous:1, speech:6, pop:92},
+  {rank:45, track:"Higher Love",                artist:"Kygo",                  genre:"electropop",             bpm:104,energy:67,dance:53,loud:-5,live:8, val:41,dur:236,acous:10,speech:3, pop:82},
+  {rank:46, track:"Bones",                      artist:"Imagine Dragons",       genre:"pop",                    bpm:136,energy:67,dance:62,loud:-8,live:11,val:57,dur:178,acous:4, speech:5, pop:75},
+  {rank:47, track:"Never Really Over",          artist:"Katy Perry",            genre:"dance pop",              bpm:100,energy:80,dance:64,loud:-5,live:5, val:50,dur:209,acous:3, speech:5, pop:83},
+  {rank:48, track:"No Guidance",                artist:"Chris Brown",           genre:"r&b",                    bpm:80, energy:55,dance:73,loud:-8,live:8, val:62,dur:267,acous:7, speech:4, pop:85},
+  {rank:49, track:"Circles",                    artist:"Post Malone",           genre:"dfw rap",                bpm:120,energy:48,dance:69,loud:-7,live:8, val:55,dur:215,acous:6, speech:4, pop:89},
+  {rank:50, track:"Señorita",                   artist:"Camila Cabello",        genre:"dance pop",              bpm:117,energy:55,dance:76,loud:-6,live:8, val:75,dur:191,acous:4, speech:3, pop:79}
+];
+
+// ─── State ───
+let filtered = [...RAW];
+let sortKey = 'rank';
+let sortDir = 1;
+let activeGenre = 'all';
+let searchVal = '';
+let currentPage = 1;
+const PAGE_SIZE = 10;
+let selectedRow = null;
+
+// ─── Columns ───
+const COLS = [
+  { key:'rank',   label:'#',         type:'rank' },
+  { key:'track',  label:'Canción',   type:'track' },
+  { key:'artist', label:'Artista',   type:'artist' },
+  { key:'genre',  label:'Género',    type:'genre' },
+  { key:'bpm',    label:'BPM',       type:'num' },
+  { key:'energy', label:'Energía',   type:'bar', max:100 },
+  { key:'dance',  label:'Baile',     type:'bar', max:100 },
+  { key:'pop',    label:'Popularidad', type:'bar', max:100 },
+  { key:'val',    label:'Valencia',  type:'bar', max:100 },
+  { key:'dur',    label:'Duración',  type:'dur' },
+];
+
+function fmtDur(s) {
+  const m = Math.floor(s/60), sec = s%60;
+  return `${m}:${sec.toString().padStart(2,'0')}`;
+}
+
+function energyColor(v) {
+  if (v >= 75) return '#1DB954';
+  if (v >= 50) return '#f59e0b';
+  return '#ef4444';
+}
+
+// ─── KPI ───
+function renderKPI() {
+  const avgBPM = Math.round(filtered.reduce((a,d)=>a+d.bpm,0)/filtered.length);
+  const avgEnergy = Math.round(filtered.reduce((a,d)=>a+d.energy,0)/filtered.length);
+  const avgPop = Math.round(filtered.reduce((a,d)=>a+d.pop,0)/filtered.length);
+  const genres = [...new Set(filtered.map(d=>d.genre))].length;
+
+  document.getElementById('kpiRow').innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-label">Canciones</div>
+      <div class="kpi-value">${filtered.length}<span>/50</span></div>
+      <div class="kpi-sub">en selección actual</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">BPM Promedio</div>
+      <div class="kpi-value">${avgBPM}</div>
+      <div class="kpi-sub">beats por minuto</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Energía Media</div>
+      <div class="kpi-value">${avgEnergy}<span>%</span></div>
+      <div class="kpi-sub">intensidad promedio</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Géneros únicos</div>
+      <div class="kpi-value">${genres}</div>
+      <div class="kpi-sub">estilos representados</div>
+    </div>
+  `;
+}
+
+// ─── Genre Filters ───
+function renderGenreFilters() {
+  const genres = [...new Set(RAW.map(d => d.genre))].sort();
+  const wrap = document.getElementById('genreFilters');
+  wrap.innerHTML = genres.map(g => `<button class="filter-btn${g===activeGenre?' active':''}" data-genre="${g}">${g}</button>`).join('');
+  wrap.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeGenre = btn.dataset.genre;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector('.filter-btn[data-genre="all"]').classList.remove('active');
+      applyFilters();
+    });
+  });
+  document.querySelector('.filter-btn[data-genre="all"]').addEventListener('click', () => {
+    activeGenre = 'all';
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn[data-genre="all"]').classList.add('active');
+    applyFilters();
+  });
+}
+
+function applyFilters() {
+  let data = [...RAW];
+  if (activeGenre !== 'all') data = data.filter(d => d.genre === activeGenre);
+  if (searchVal) {
+    const q = searchVal.toLowerCase();
+    data = data.filter(d => d.track.toLowerCase().includes(q) || d.artist.toLowerCase().includes(q));
+  }
+  data.sort((a,b) => {
+    const av = a[sortKey], bv = b[sortKey];
+    if (typeof av === 'string') return sortDir * av.localeCompare(bv);
+    return sortDir * (av - bv);
+  });
+  filtered = data;
+  currentPage = 1;
+  renderKPI();
+  renderTable();
+  renderCharts();
+}
+
+// ─── TABLE ───
+function renderTableHead() {
+  document.getElementById('tableHead').innerHTML = COLS.map(c => `
+    <th class="${c.key===sortKey?'sorted':''}" data-key="${c.key}">
+      ${c.label}
+      <span class="sort-arrow">${c.key===sortKey?(sortDir===1?'↑':'↓'):''}</span>
+    </th>
+  `).join('');
+  document.querySelectorAll('thead th').forEach(th => {
+    th.addEventListener('click', () => {
+      if (sortKey === th.dataset.key) sortDir *= -1;
+      else { sortKey = th.dataset.key; sortDir = 1; }
+      applyFilters();
+    });
+  });
+}
+
+function renderTable() {
+  renderTableHead();
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const page = filtered.slice(start, start + PAGE_SIZE);
+  const tbody = document.getElementById('tableBody');
+
+  if (!page.length) {
+    tbody.innerHTML = `<tr><td colspan="${COLS.length}"><div class="no-results">No se encontraron resultados para <span>"${searchVal}"</span></div></td></tr>`;
+    renderPagination();
+    return;
+  }
+
+  tbody.innerHTML = page.map(d => `
+    <tr data-rank="${d.rank}" class="${selectedRow===d.rank?'selected':''}">
+      <td class="rank">${d.rank}</td>
+      <td class="track">${d.track}</td>
+      <td class="artist">${d.artist}</td>
+      <td class="genre">${d.genre}</td>
+      <td style="font-family:var(--font-mono);font-size:13px">${d.bpm}</td>
+      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${d.energy}%;background:${energyColor(d.energy)}"></div></div><span class="bar-val">${d.energy}</span></div></td>
+      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${d.dance}%"></div></div><span class="bar-val">${d.dance}</span></div></td>
+      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${d.pop}%"></div></div><span class="bar-val">${d.pop}</span></div></td>
+      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${d.val}%;background:#8b5cf6"></div></div><span class="bar-val">${d.val}</span></div></td>
+      <td style="font-family:var(--font-mono);font-size:12px;color:var(--gray2)">${fmtDur(d.dur)}</td>
+    </tr>
+  `).join('');
+
+  tbody.querySelectorAll('tr').forEach(tr => {
+    tr.addEventListener('click', () => toggleDetail(+tr.dataset.rank));
+  });
+  renderPagination();
+}
+
+function toggleDetail(rank) {
+  const panel = document.getElementById('detailPanel');
+  if (selectedRow === rank) {
+    selectedRow = null;
+    panel.classList.remove('open');
+    panel.innerHTML = '';
+  } else {
+    selectedRow = rank;
+    const d = RAW.find(x => x.rank === rank);
+    panel.classList.add('open');
+    panel.innerHTML = `
+      <div class="detail-grid">
+        <div class="detail-cover">#${d.rank}</div>
+        <div class="detail-info">
+          <h2>${d.track}</h2>
+          <div class="detail-artist">${d.artist}</div>
+          <div class="detail-attrs">
+            <div class="attr-chip"><strong>Género</strong>${d.genre}</div>
+            <div class="attr-chip"><strong>BPM</strong>${d.bpm}</div>
+            <div class="attr-chip"><strong>Duración</strong>${fmtDur(d.dur)}</div>
+            <div class="attr-chip"><strong>Acústica</strong>${d.acous}%</div>
+            <div class="attr-chip"><strong>Habla</strong>${d.speech}%</div>
+            <div class="attr-chip"><strong>Live</strong>${d.live}%</div>
+            <div class="attr-chip"><strong>Volumen</strong>${d.loud} dB</div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-bars">
+        ${[
+          {label:'Popularidad', val:d.pop,  color:'#1DB954'},
+          {label:'Energía',     val:d.energy,color:energyColor(d.energy)},
+          {label:'Baile',       val:d.dance, color:'#1DB954'},
+          {label:'Valencia',    val:d.val,   color:'#8b5cf6'},
+          {label:'Acústica',    val:d.acous, color:'#f59e0b'},
+        ].map(b=>`
+          <div class="detail-bar-row">
+            <div class="detail-bar-label">${b.label}</div>
+            <div class="detail-bar-bg"><div class="detail-bar-fill" style="width:${b.val}%;background:${b.color}"></div></div>
+            <div class="detail-bar-num">${b.val}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+  renderTable();
+}
+
+// ─── PAGINATION ───
+function renderPagination() {
+  const total = Math.ceil(filtered.length / PAGE_SIZE);
+  const pg = document.getElementById('pagination');
+  if (total <= 1) { pg.innerHTML = ''; return; }
+  let html = `<button class="page-btn" id="prevBtn">‹</button>`;
+  for (let i = 1; i <= total; i++) {
+    html += `<button class="page-btn${i===currentPage?' active':''}" data-p="${i}">${i}</button>`;
+  }
+  html += `<button class="page-btn" id="nextBtn">›</button>`;
+  pg.innerHTML = html;
+  pg.querySelectorAll('[data-p]').forEach(btn => {
+    btn.addEventListener('click', () => { currentPage = +btn.dataset.p; renderTable(); });
+  });
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentPage > 1) { currentPage--; renderTable(); }
+  });
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentPage < total) { currentPage++; renderTable(); }
+  });
+}
+
+// ─── CHARTS ───
+let charts = {};
+
+function renderCharts() {
+  // Genre freq
+  const genreCount = {};
+  filtered.forEach(d => { genreCount[d.genre] = (genreCount[d.genre]||0)+1; });
+  const sortedGenres = Object.entries(genreCount).sort((a,b)=>b[1]-a[1]).slice(0,8);
+
+  // BPM by genre
+  const bpmByGenre = {};
+  filtered.forEach(d => {
+    if (!bpmByGenre[d.genre]) bpmByGenre[d.genre] = [];
+    bpmByGenre[d.genre].push(d.bpm);
+  });
+  const topGenresBPM = Object.entries(bpmByGenre)
+    .map(([g,bpms])=>({genre:g, avg: Math.round(bpms.reduce((a,b)=>a+b,0)/bpms.length)}))
+    .sort((a,b)=>b.avg-a.avg).slice(0,7);
+
+  const GREENS = ['#1DB954','#1ed760','#17a349','#0f7a35','#158a3e','#23d45e','#2ecc71','#27ae60'];
+  const cfg = (type, data, opts) => ({ type, data, options: { responsive:true, plugins:{ legend:{display:false}, tooltip:{...TOOLTIP_STYLE}}, ...opts } });
+
+  const TOOLTIP_STYLE = {
+    backgroundColor:'#282828',
+    titleColor:'#1DB954',
+    bodyColor:'#b3b3b3',
+    borderColor:'#333',
+    borderWidth:1,
+    padding:10,
+    cornerRadius:6,
+  };
+
+  // Destroy old
+  Object.values(charts).forEach(c => c.destroy());
+  charts = {};
+
+  // Genre chart
+  charts.genre = new Chart(document.getElementById('genreChart'), {
+    type: 'bar',
+    data: {
+      labels: sortedGenres.map(([g])=>g),
+      datasets: [{ data: sortedGenres.map(([,v])=>v), backgroundColor: GREENS, borderRadius:4, borderSkipped:false }]
+    },
+    options: {
+      responsive: true,
+      indexAxis: 'y',
+      plugins: { legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.raw} canción${ctx.raw!==1?'es':''}`}, ...TOOLTIP_STYLE } },
+      scales: {
+        x: { grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#535353',font:{size:11,family:'DM Mono'}} },
+        y: { grid:{display:false}, ticks:{color:'#b3b3b3',font:{size:11}} }
+      }
+    }
+  });
+
+  // Scatter
+  charts.scatter = new Chart(document.getElementById('scatterChart'), {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        data: filtered.map(d => ({x:d.energy, y:d.pop, label:d.track, artist:d.artist})),
+        backgroundColor: filtered.map(d => energyColor(d.energy) + 'cc'),
+        pointRadius: 6,
+        pointHoverRadius: 9,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {display:false},
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const pt = ctx.raw;
+              return [`${pt.label}`, `${pt.artist}`, `Energía: ${pt.x} · Pop: ${pt.y}`];
+            }
+          },
+          ...TOOLTIP_STYLE
+        }
+      },
+      scales: {
+        x: { title:{display:true,text:'Energía',color:'#535353',font:{size:11}}, grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#535353',font:{size:10,family:'DM Mono'}} },
+        y: { title:{display:true,text:'Popularidad',color:'#535353',font:{size:11}}, grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#535353',font:{size:10,family:'DM Mono'}} }
+      }
+    }
+  });
+
+  // BPM chart
+  charts.bpm = new Chart(document.getElementById('bpmChart'), {
+    type: 'bar',
+    data: {
+      labels: topGenresBPM.map(d=>d.genre),
+      datasets: [{
+        data: topGenresBPM.map(d=>d.avg),
+        backgroundColor: topGenresBPM.map((_,i)=>GREENS[i%GREENS.length]),
+        borderRadius:4,
+        borderSkipped:false,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend:{display:false}, tooltip:{ callbacks:{label:ctx=>` ${ctx.raw} BPM`}, ...TOOLTIP_STYLE } },
+      scales: {
+        x: { grid:{display:false}, ticks:{color:'#535353',font:{size:10},maxRotation:30} },
+        y: { grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#535353',font:{size:10,family:'DM Mono'}}, min:80 }
+      }
+    }
+  });
+}
+
+// ─── SEARCH ───
+document.getElementById('searchBox').addEventListener('input', e => {
+  searchVal = e.target.value;
+  applyFilters();
+});
+
+// ─── INIT ───
+renderGenreFilters();
+applyFilters();
+</script>
+</body>
+</html>
